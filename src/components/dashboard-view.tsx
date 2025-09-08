@@ -62,17 +62,23 @@ export function DashboardView({ report, entities }: DashboardViewProps) {
                         <CardTitle>PII Detections by Type</CardTitle>
                     </CardHeader>
                     <CardContent className="pl-2">
-                      <ChartContainer config={chartConfig} className="h-[300px] w-full">
-                        <ResponsiveContainer width="100%" height={300}>
-                           <BarChart accessibilityLayer data={chartData} margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
-                              <CartesianGrid vertical={false} />
-                              <XAxis dataKey="name" tickLine={false} tickMargin={10} axisLine={false} />
-                              <YAxis />
-                              <ChartTooltip cursor={{fill: 'hsl(var(--muted))'}} content={<ChartTooltipContent indicator="dot" />} />
-                              <Bar dataKey="value" fill="var(--color-value)" radius={4} />
-                           </BarChart>
-                        </ResponsiveContainer>
-                      </ChartContainer>
+                        {chartData.length > 0 ? (
+                            <ChartContainer config={chartConfig} className="h-[300px] w-full">
+                                <ResponsiveContainer width="100%" height={300}>
+                                <BarChart accessibilityLayer data={chartData} margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
+                                    <CartesianGrid vertical={false} />
+                                    <XAxis dataKey="name" tickLine={false} tickMargin={10} axisLine={false} />
+                                    <YAxis />
+                                    <ChartTooltip cursor={{fill: 'hsl(var(--muted))'}} content={<ChartTooltipContent indicator="dot" />} />
+                                    <Bar dataKey="value" fill="var(--color-value)" radius={4} />
+                                </BarChart>
+                                </ResponsiveContainer>
+                            </ChartContainer>
+                        ) : (
+                            <div className="flex h-[300px] items-center justify-center text-muted-foreground">
+                                No PII detected in the data.
+                            </div>
+                        )}
                     </CardContent>
                 </Card>
                 <Card className="col-span-12 lg:col-span-3">
