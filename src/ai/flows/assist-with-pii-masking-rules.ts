@@ -27,8 +27,7 @@ const AssistWithPIIMaskingRulesOutputSchema = z.object({
     z.object({
       entityType: z.string().describe('The type of PII entity the rule applies to.'),
       maskingTechnique: z.string().describe('The suggested masking technique (e.g., redaction, substitution, tokenization).'),
-      parameters: z.record(z.string(), z.any()).describe('Parameters for the masking technique (e.g., replacement character, tokenization algorithm). Return an empty object if no parameters are needed.'),
-      justification: z.string().describe('Explanation of why this rule is appropriate for this entity type and context.'),
+      justification: z.string().describe('Explanation of why this rule is appropriate for this entity type and context. If the technique requires parameters (e.g., a replacement character), describe them here.'),
     })
   ).describe('A list of suggested PII masking rules.'),
 });
@@ -55,8 +54,7 @@ const prompt = ai.definePrompt({
   For each PII entity, provide a masking rule with the following properties:
   - entityType: The type of PII entity the rule applies to.
   - maskingTechnique: The suggested masking technique.
-  - parameters: Parameters for the masking technique. If no parameters are needed, return an empty object {}.
-  - justification: Explanation of why this rule is appropriate for this entity type and context.
+  - justification: Explanation of why this rule is appropriate. If the masking technique requires parameters (like a substitution character), include their description in this justification.
 
   The desired level of obfuscation is: {{{desiredLevelOfObfuscation}}}
 
@@ -96,6 +94,14 @@ const assistWithPIIMaskingRulesFlow = ai.defineFlow(
   },
   async input => {
     const {output} = await prompt(input);
-    return output!;
+    // Transform the output to match the application's MaskingRule type
+    // which still expects a `parameters` field.
+    const transformedOutput = {
+        maskingRules: output!.maskingRules.map(rule => ({
+            ...rule,
+            parameters: {}, // Add an empty parameters object
+        })),
+    };
+    return transformedOutput;
   }
 );
