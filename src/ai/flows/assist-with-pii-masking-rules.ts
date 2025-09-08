@@ -27,7 +27,7 @@ const AssistWithPIIMaskingRulesOutputSchema = z.object({
     z.object({
       entityType: z.string().describe('The type of PII entity the rule applies to.'),
       maskingTechnique: z.string().describe('The suggested masking technique (e.g., redaction, substitution, tokenization).'),
-      parameters: z.record(z.any()).describe('Parameters for the masking technique (e.g., replacement character, tokenization algorithm).'),
+      parameters: z.record(z.any()).optional().describe('Parameters for the masking technique (e.g., replacement character, tokenization algorithm). Can be an empty object.'),
       justification: z.string().describe('Explanation of why this rule is appropriate for this entity type and context.'),
     })
   ).describe('A list of suggested PII masking rules.'),
