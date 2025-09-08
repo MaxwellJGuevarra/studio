@@ -27,7 +27,7 @@ const AssistWithPIIMaskingRulesOutputSchema = z.object({
     z.object({
       entityType: z.string().describe('The type of PII entity the rule applies to.'),
       maskingTechnique: z.string().describe('The suggested masking technique (e.g., redaction, substitution, tokenization).'),
-      parameters: z.record(z.string(), z.any()).optional().describe('Parameters for the masking technique (e.g., replacement character, tokenization algorithm). Can be an empty object.'),
+      parameters: z.record(z.string(), z.any()).describe('Parameters for the masking technique (e.g., replacement character, tokenization algorithm). Return an empty object if no parameters are needed.'),
       justification: z.string().describe('Explanation of why this rule is appropriate for this entity type and context.'),
     })
   ).describe('A list of suggested PII masking rules.'),
@@ -55,7 +55,7 @@ const prompt = ai.definePrompt({
   For each PII entity, provide a masking rule with the following properties:
   - entityType: The type of PII entity the rule applies to.
   - maskingTechnique: The suggested masking technique.
-  - parameters: Parameters for the masking technique.
+  - parameters: Parameters for the masking technique. If no parameters are needed, return an empty object {}.
   - justification: Explanation of why this rule is appropriate for this entity type and context.
 
   The desired level of obfuscation is: {{{desiredLevelOfObfuscation}}}
