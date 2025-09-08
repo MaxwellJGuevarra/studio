@@ -55,7 +55,7 @@ export async function processCsvFile(fileContent: string): Promise<ProcessingRes
       return {
         originalData: fileContent,
         nerResults: [],
-        summaryReport: { report: JSON.stringify({ summary: "No PII entities were detected in the provided data.", riskLevel: "low", keyFindings: [] }) },
+        summaryReport: { summary: "No PII entities were detected in the provided data.", riskLevel: "low", keyFindings: [] },
         maskingRules: []
       };
     }

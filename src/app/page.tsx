@@ -72,7 +72,7 @@ export default function Home() {
       toast({
         variant: "destructive",
         title: "Oh no! Something went wrong.",
-        description: errorMessage,
+        description: "There was an error during analysis. Please try again.",
       });
     } finally {
       setIsLoading(false);

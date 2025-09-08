@@ -19,7 +19,9 @@ const GenerateSummaryReportInputSchema = z.object({
 export type GenerateSummaryReportInput = z.infer<typeof GenerateSummaryReportInputSchema>;
 
 const GenerateSummaryReportOutputSchema = z.object({
-  report: z.string().describe('The summary report in JSON format.'),
+  summary: z.string().describe('A concise summary of the PII detections.'),
+  riskLevel: z.enum(['low', 'medium', 'high']).describe('The overall risk level.'),
+  keyFindings: z.array(z.string()).describe('A list of key findings and actionable insights.'),
 });
 export type GenerateSummaryReportOutput = z.infer<typeof GenerateSummaryReportOutputSchema>;
 
@@ -37,7 +39,8 @@ NER Results: {{{nerResults}}}
 Proximity Analysis Results: {{{proximityAnalysisResults}}}
 Graph Analysis Results: {{{graphAnalysisResults}}}
 
-Highlight key risk areas and provide actionable insights. Return the report in JSON format.`,
+Your response must be a JSON object that conforms to the GenerateSummaryReportOutputSchema.
+Highlight key risk areas and provide actionable insights in the keyFindings array.`,
 });
 
 const generateSummaryReportFlow = ai.defineFlow(

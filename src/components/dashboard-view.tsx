@@ -30,7 +30,7 @@ const StatCard = ({ title, value, icon, description }: { title: string, value: s
 
 
 export function DashboardView({ report, entities }: DashboardViewProps) {
-    const summary = report && report.report ? JSON.parse(report.report) : { summary: "No summary available.", riskLevel: "unknown", keyFindings: [] };
+    const summary = report || { summary: "No summary available.", riskLevel: "unknown", keyFindings: [] };
 
     const entityCounts = entities.reduce((acc, entity) => {
         acc[entity.type] = (acc[entity.type] || 0) + 1;
